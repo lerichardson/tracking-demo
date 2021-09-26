@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/lerichardson/tracking-demo/routes"
 )
 
 func main() {
@@ -11,14 +12,8 @@ func main() {
 		AllowOrigins: "*",
 		AllowHeaders: "*",
 	}))
-	app.Get("/demo", func(c *fiber.Ctx) error {
-		return c.SendFile("./public/demo.html")
-	})
-	app.Get("/js/tracker.js", func(c *fiber.Ctx) error {
-		return c.SendFile("./public/tracker.js")
-	})
-	app.Post("/trackerData", func(c *fiber.Ctx) error {
-		return c.Send(c.Body())
-	})
+	routes.Tracker(app)
+	routes.RecieveTrackerData(app)
+	routes.DemoPage(app)
 	app.Listen(":3000")
 }
